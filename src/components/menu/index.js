@@ -106,6 +106,7 @@ export default class Menu extends Component {
   }
   async readUntilClosed(portIndex) {
     let port = this.props.ports[portIndex];
+
     while (port.readable && keepReading) {
       reader = port.readable.getReader();
       try {

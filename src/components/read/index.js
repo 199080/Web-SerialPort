@@ -4,51 +4,52 @@ import "./index.css";
 export default class Read extends Component {
   renderLi() {
     const readType = this.props.readType;
-    return this.props.value.map((items, index) => {
+    let strArr = [];
+    let body = [];
+    this.props.value.map((items, index) => {
       const item = items.value;
       const type = items.type; // 1接收，2发送
-      let body = [];
+      
       if (item !== undefined) {
-        let strArr = [];
+        
         for (let hex of Array.from(item)) {
           strArr.push(hex.toString(16).toLocaleUpperCase());
         }
-        if (strArr.includes("D") && strArr.includes("A")) {
-          if (strArr.indexOf("A") - strArr.indexOf("D") === 1) {
-            strArr.splice(strArr.indexOf("D"), 1);
-            strArr.splice(strArr.indexOf("A"), 1, <br key={0} />);
-          }
-        }
-        strArr = strArr.map((item) => {
-          if (typeof item === "string") {
-            if (readType === 1) {
-              return (parseInt(item, 16));
-            } else if (readType === 2) {
-              return item + " ";
-        
-            }
-          }
-          return item;
-        });
-        if (readType === 1) {
-         
-          let encodedBytes = new Uint8Array(strArr);
-          const decoder = new TextDecoder();
-          const decodedValue = decoder.decode(encodedBytes);
-          console.log(decodedValue); // Output: Hello, World!
-          strArr = Array.from(decodedValue);
-        } 
-        if (typeof strArr[strArr.length - 1] === "string") {
-          strArr.push(<br key={1} />);
-        }
-        body.push(strArr);
+
       }
-      return (
-        <span className={this.textColor(type)} key={index}>
-          {body}
-        </span>
-      );
+
+     
     });
+    strArr = strArr.map((item) => {
+      if (typeof item === "string") {
+        if (readType === 1) {
+          return (parseInt(item, 16));
+        } else if (readType === 2) {
+          return item + " ";
+    
+        }
+      }
+      return item;
+    });
+
+      let encodedBytes = new Uint8Array(strArr);
+      const decoder = new TextDecoder();
+      const decodedValue = decoder.decode(encodedBytes);
+      console.log(decodedValue); // Output: Hello, World!
+     // strArr = Array.from(decodedValue);
+    
+    // if (typeof strArr[strArr.length - 1] === "string") {
+    //   strArr.push(<br key={1} />);
+    // }
+    
+    body.push(decodedValue);
+
+    return (
+      <span className={this.textColor(1)} >
+        {body}
+      </span>
+    );
+
   }
   textColor(type) {
     let className = "py-3 ";
@@ -70,9 +71,12 @@ export default class Read extends Component {
   render() {
     return (
       <>
-        <div className="break-all text-xl">{this.renderLi()}</div>
+        <div className="break-all text-xl" style={{ whiteSpace:"pre-wrap"}}>
+            
+            {this.renderLi()}
+        </div>
         <div
-          style={{ float: "left", clear: "both" }}
+          style={{ float: "left", clear: "both"}}
           ref={(el) => {
             this.bodyEnd = el;
           }}
