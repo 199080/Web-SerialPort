@@ -24,9 +24,15 @@ export default class Write extends Component {
     }
     if (writeType === 1) {
       // ASCII
-      for (let i = 0; i < value.length; i++) {
-        arr.push(a2hex(value[i]));
+      console.log(value);
+      const encoder = new TextEncoder();
+      const bytes = encoder.encode(value);
+      for (var i = 0; i < bytes.byteLength; i++) {
+        arr[i] = bytes[i];
       }
+      //  for (let i = 0; i < value.length; i++) {
+      //    arr.push(a2hex(value[i]));
+      //  }
     } else if (writeType === 2) {
       // HEX
       if (/^[0-9A-Fa-f]+$/.test(value) && value.length % 2 === 0) {

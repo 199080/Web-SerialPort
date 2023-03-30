@@ -60,7 +60,12 @@ export default class App extends Component {
       } else {
         let port = this.state.ports[this.state.portIndex];
         const writer = port.writable.getWriter();
-        await writer.write(new Uint8Array(value));
+      //  const encoder = new TextEncoder();
+      //  const bytes = encoder.encode(value);
+      const uint8Arr = new Uint8Array(value);
+     // console.log(uint8Arr); // Output: Uint8Array(5) [ 0, 1, 2, 3, 4 ]
+        console.log(uint8Arr, "底层发送");
+        await writer.write(uint8Arr);
         writer.releaseLock();
         resolve(value);
       }
@@ -83,6 +88,7 @@ export default class App extends Component {
         value: res,
         type: 2,
       });
+
       this.setState({
         readValue: newValue,
       });

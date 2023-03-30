@@ -22,13 +22,22 @@ export default class Read extends Component {
         strArr = strArr.map((item) => {
           if (typeof item === "string") {
             if (readType === 1) {
-              return hex2a(parseInt(item, 16));
+              return (parseInt(item, 16));
             } else if (readType === 2) {
               return item + " ";
+        
             }
           }
           return item;
         });
+        if (readType === 1) {
+         
+          let encodedBytes = new Uint8Array(strArr);
+          const decoder = new TextDecoder();
+          const decodedValue = decoder.decode(encodedBytes);
+          console.log(decodedValue); // Output: Hello, World!
+          strArr = Array.from(decodedValue);
+        } 
         if (typeof strArr[strArr.length - 1] === "string") {
           strArr.push(<br key={1} />);
         }
